@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Adaptive Traffic Signal — Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  </head>
+  <body>
+    <div class="app">
+      <header class="header">
+        <div>
+          <h1>AI Traffic Signal Optimization</h1>
+          <p class="subtitle">Live counts · Signal timing · Congestion (ML)</p>
+        </div>
+        <div class="header-actions">
+          <div class="upload-block">
+            <input
+              type="file"
+              id="input-video"
+              class="input-file"
+              accept="video/*,.mp4,.avi,.mov,.mkv,.webm,.m4v"
+            />
+            <label for="input-video" class="btn btn-file">Choose video</label>
+            <span id="upload-filename" class="upload-name">No file selected</span>
+            <button id="btn-upload-analyze" type="button" class="btn primary" disabled>
+              Upload &amp; analyze
+            </button>
+          </div>
+          <button id="btn-run-yolo" class="btn secondary">Sample video detection</button>
+          <label class="toggle">
+            <input type="checkbox" id="emergency-toggle" />
+            Emergency corridor (NS)
+          </label>
+        </div>
+      </header>
+
+      <div id="alert-emergency" class="alert hidden" role="alert"></div>
+      <div id="upload-error" class="alert upload-err hidden" role="alert"></div>
+
+      <section class="grid">
+        <div class="card">
+          <h2>Vehicle total</h2>
+          <p class="metric" id="metric-total">—</p>
+          <p class="hint">From last YOLO run (or synthetic fallback)</p>
+        </div>
+        <div class="card">
+          <h2>Density (CV)</h2>
+          <p class="metric" id="metric-density">—</p>
+          <p class="hint">LOW / MEDIUM / HIGH</p>
+        </div>
+        <div class="card">
+          <h2>Congestion (ML)</h2>
+          <p class="metric" id="metric-ml">—</p>
+          <p class="hint" id="metric-ml-sub">Score 0–100</p>
+        </div>
+        <div class="card">
+          <h2>Active green</h2>
+          <p class="metric"><span id="metric-timer">—</span> s</p>
+          <p class="hint" id="active-corridor">Corridor —</p>
+        </div>
+      </section>
+
+      <section class="lanes">
+        <h2>Four lanes (counts)</h2>
+        <div class="lane-cards">
+          <div class="lane"><span>North</span><strong id="lane-north">0</strong></div>
+          <div class="lane"><span>South</span><strong id="lane-south">0</strong></div>
+          <div class="lane"><span>East</span><strong id="lane-east">0</strong></div>
+          <div class="lane"><span>West</span><strong id="lane-west">0</strong></div>
+        </div>
+      </section>
+
+      <section class="signals">
+        <div class="junction">
+          <div class="light-column">
+            <div class="light north" id="light-ns">
+              <span class="bulb red"></span>
+              <span class="bulb yellow"></span>
+              <span class="bulb green on"></span>
+            </div>
+            <p>North–South</p>
+          </div>
+          <div class="light-column">
+            <div class="light east" id="light-ew">
+              <span class="bulb red on"></span>
+              <span class="bulb yellow"></span>
+              <span class="bulb green"></span>
+            </div>
+            <p>East–West</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="chart-card">
+        <h2>Traffic trend (last samples)</h2>
+        <canvas id="chart-traffic" height="120"></canvas>
+      </section>
+    </div>
+
+    <div id="loading-overlay" class="loading-overlay hidden" aria-hidden="true">
+      <div class="loading-card">
+        <div class="spinner" aria-hidden="true"></div>
+        <p id="loading-text">Running YOLO detection…</p>
+        <p class="loading-sub">This may take a minute for large videos</p>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
