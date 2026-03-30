@@ -278,6 +278,7 @@ function initChart() {
 }
 
 async function boot() {
+  if (typeof lucide !== 'undefined') lucide.createIcons();
   initChart();
   el("btn-run-yolo").addEventListener("click", runVideo);
   el("btn-upload-analyze").addEventListener("click", uploadAndAnalyze);
