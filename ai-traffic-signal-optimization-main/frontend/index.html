@@ -6,6 +6,7 @@
     <title>Adaptive Traffic Signal — Dashboard</title>
     <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body>
     <div class="app">
@@ -41,22 +42,34 @@
 
       <section class="grid">
         <div class="card">
-          <h2>Vehicle total</h2>
+          <div class="card-header">
+            <h2>Vehicle total</h2>
+            <i data-lucide="car" class="icon-muted"></i>
+          </div>
           <p class="metric" id="metric-total">—</p>
-          <p class="hint">From last YOLO run (or synthetic fallback)</p>
+          <p class="hint">From last YOLO detection</p>
         </div>
         <div class="card">
-          <h2>Density (CV)</h2>
+          <div class="card-header">
+            <h2>Density (CV)</h2>
+            <i data-lucide="bar-chart-3" class="icon-muted"></i>
+          </div>
           <p class="metric" id="metric-density">—</p>
           <p class="hint">LOW / MEDIUM / HIGH</p>
         </div>
         <div class="card">
-          <h2>Congestion (ML)</h2>
+          <div class="card-header">
+            <h2>Congestion (ML)</h2>
+            <i data-lucide="zap" class="icon-muted"></i>
+          </div>
           <p class="metric" id="metric-ml">—</p>
           <p class="hint" id="metric-ml-sub">Score 0–100</p>
         </div>
         <div class="card">
-          <h2>Active green</h2>
+          <div class="card-header">
+            <h2>Active green</h2>
+            <i data-lucide="activity" class="icon-muted"></i>
+          </div>
           <p class="metric"><span id="metric-timer">—</span> s</p>
           <p class="hint" id="active-corridor">Corridor —</p>
         </div>

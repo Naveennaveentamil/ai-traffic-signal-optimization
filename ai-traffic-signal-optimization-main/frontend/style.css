@@ -1,25 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
+
 :root {
-  --bg: #0f1419;
-  --card: #1a2332;
-  --border: #2d3a4f;
-  --text: #e8eef7;
-  --muted: #8b9cb3;
-  --accent: #3d8bfd;
-  --green: #22c55e;
+  --bg: #030712;
+  --card: rgba(17, 24, 39, 0.7);
+  --card-hover: rgba(31, 41, 55, 0.85);
+  --border: rgba(255, 255, 255, 0.1);
+  --border-hover: rgba(255, 255, 255, 0.2);
+  --text: #f9fafb;
+  --muted: #9ca3af;
+  --accent: #3b82f6;
+  --accent-glow: rgba(59, 130, 246, 0.5);
+  --green: #10b981;
+  --green-glow: rgba(16, 185, 129, 0.6);
   --red: #ef4444;
-  --amber: #eab308;
+  --red-glow: rgba(239, 68, 68, 0.6);
+  --amber: #f59e0b;
+  --amber-glow: rgba(245, 158, 11, 0.5);
+  
+  --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 * {
   box-sizing: border-box;
+  transition: var(--transition-smooth);
 }
 
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: "Segoe UI", system-ui, sans-serif;
-  background: radial-gradient(1200px 600px at 10% -10%, #1e293b 0%, var(--bg) 55%);
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    radial-gradient(circle at 0% 0%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
   color: var(--text);
+  overflow-x: hidden;
 }
 
 .app {
@@ -60,54 +76,65 @@ h1 {
   border: 1px solid var(--border);
   background: var(--card);
   color: var(--text);
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
+  padding: 0.6rem 1.25rem;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 0.9rem;
+  font-weight: 500;
+  backdrop-filter: blur(8px);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+.btn:active::after {
+  width: 200%;
+  height: 200%;
+  opacity: 0;
 }
 
 .btn.primary {
-  background: linear-gradient(180deg, #2563eb, #1d4ed8);
-  border-color: #1e40af;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  border-color: #2563eb;
+  color: white;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+.btn.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
 }
 
 .btn.secondary {
-  background: #243044;
+  background: rgba(255, 255, 255, 0.05);
   border-color: var(--border);
 }
 
-.input-file {
-  position: absolute;
-  width: 0.1px;
-  height: 0.1px;
-  opacity: 0;
-  overflow: hidden;
-  z-index: -1;
+.btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--border-hover);
 }
 
-.upload-block {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem 0.75rem;
-}
-
-.btn-file {
-  cursor: pointer;
-  display: inline-block;
-}
-
-.upload-name {
-  font-size: 0.8rem;
-  color: var(--muted);
-  max-width: 180px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
 }
 
 .btn:hover {
-  filter: brightness(1.08);
+  border-color: var(--border-hover);
 }
 
 .toggle {
@@ -147,29 +174,76 @@ h1 {
 .card {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 1rem 1.1rem;
+  border-radius: 16px;
+  padding: 1.25rem;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: fadeInDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.icon-muted {
+  color: var(--muted);
+  width: 18px !important;
+  height: 18px !important;
+  opacity: 0.6;
+}
+
+.card:nth-child(1) { animation-delay: 0.1s; }
+.card:nth-child(2) { animation-delay: 0.2s; }
+.card:nth-child(3) { animation-delay: 0.3s; }
+.card:nth-child(4) { animation-delay: 0.4s; }
+
+.card:hover {
+  background: var(--card-hover);
+  border-color: var(--border-hover);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
 }
 
 .card h2 {
-  margin: 0 0 0.5rem;
-  font-size: 0.85rem;
-  font-weight: 600;
+  margin: 0 0 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 700;
   color: var(--muted);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.1em;
 }
 
 .metric {
-  font-size: 1.75rem;
-  font-weight: 700;
+  font-size: 2.25rem;
+  font-weight: 800;
   margin: 0;
+  background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .hint {
-  margin: 0.35rem 0 0;
-  font-size: 0.8rem;
+  margin: 0.5rem 0 0;
+  font-size: 0.75rem;
+  font-weight: 500;
   color: var(--muted);
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .lanes {
@@ -249,29 +323,53 @@ h1 {
 }
 
 .bulb {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  opacity: 0.25;
-  border: 2px solid #334155;
+  opacity: 0.15;
+  border: 2px solid rgba(255, 255, 255, 0.05);
+  transition: var(--transition-bounce);
+  position: relative;
+}
+
+.bulb::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  filter: blur(12px);
+  opacity: 0;
+  transition: opacity 0.4s ease;
 }
 
 .bulb.red.on {
   opacity: 1;
   background: var(--red);
-  box-shadow: 0 0 12px rgba(239, 68, 68, 0.7);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+.bulb.red.on::after {
+  background: var(--red-glow);
+  opacity: 0.6;
 }
 
 .bulb.yellow.on {
   opacity: 1;
   background: var(--amber);
-  box-shadow: 0 0 12px rgba(234, 179, 8, 0.6);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+.bulb.yellow.on::after {
+  background: var(--amber-glow);
+  opacity: 0.6;
 }
 
 .bulb.green.on {
   opacity: 1;
   background: var(--green);
-  box-shadow: 0 0 12px rgba(34, 197, 94, 0.7);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+.bulb.green.on::after {
+  background: var(--green-glow);
+  opacity: 0.6;
 }
 
 .chart-card {
